@@ -11,7 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lavegatelevision.tv.api.ApiClient
 import com.lavegatelevision.tv.model.WpPost
+import com.lavegatelevision.tv.model.WpRendered
+import com.lavegatelevision.tv.model.WpSearchItem
 import com.lavegatelevision.tv.ui.PostAdapter
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -34,22 +37,44 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        loadPosts()
+        loadContent()
     }
 
-    private fun loadPosts() {
+    private fun loadContent() {
         progressBar.visibility = View.VISIBLE
         errorText.visibility = View.GONE
 
         lifecycleScope.launch {
             runCatching {
-                ApiClient.wordPressApi.getPosts()
-            }.onSuccess { posts ->
-                renderPosts(posts)
+                val postsRequest = async { ApiClient.wordPressApi.getPosts() }
+                val pagesRequest = async { ApiClient.wordPressApi.getPages() }
+
+                val merged = (postsRequest.await() + pagesRequest.await())
+                    .distinctBy { "${it.type}-${it.id}" }
+                    .sortedByDescending { it.date }
+
+                if (merged.isNotEmpty()) {
+                    merged
+                } else {
+                    ApiClient.wordPressApi.searchContent().map { it.toWpPost() }
+                }
+            }.onSuccess { content ->
+                renderPosts(content)
             }.onFailure {
                 showError(getString(R.string.error_loading_posts))
             }
         }
+    }
+
+    private fun WpSearchItem.toWpPost(): WpPost {
+        return WpPost(
+            id = id,
+            type = subtype,
+            title = WpRendered(title),
+            excerpt = WpRendered(getString(R.string.search_result_excerpt)),
+            content = WpRendered(getString(R.string.search_result_content, url)),
+            postUrl = url
+        )
     }
 
     private fun renderPosts(posts: List<WpPost>) {

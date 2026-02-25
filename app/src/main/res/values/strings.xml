@@ -3,4 +3,6 @@
     <string name="error_loading_posts">No se pudieron cargar las publicaciones. Revisa tu conexión.</string>
     <string name="error_empty_posts">No hay publicaciones disponibles en este momento.</string>
     <string name="source_link">Enlace original: %1$s</string>
+    <string name="search_result_excerpt">Contenido localizado desde la búsqueda de WordPress.</string>
+    <string name="search_result_content">Este contenido no devuelve cuerpo completo por API. Ábrelo en el enlace original: %1$s</string>
 </resources>
