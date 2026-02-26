@@ -1,18 +1,23 @@
-# Profuse Tablet Wrapper
+# Profuse Tablet (Android Studio)
 
-Aplicación web ligera para usar `https://www.profuse.es/intranet/panel/` desde tablet con una interfaz más limpia.
+Aplicación Android (tablet) que abre la intranet de Profuse dentro de un `WebView`.
 
-## Qué incluye
+## Funciones
 
-- Vista a pantalla completa optimizada para tablet.
-- Botón de recarga rápida.
-- Botón para abrir la intranet en una pestaña externa (fallback si `iframe` está bloqueado por seguridad).
-- Manifest para instalación como PWA en dispositivos compatibles.
+- Carga `https://www.profuse.es/intranet/panel/` directamente en la app.
+- Botón **Recargar** para refrescar el panel.
+- Botón **Abrir fuera** para abrir la URL en el navegador externo.
+- Navegación atrás: si hay historial del `WebView`, vuelve atrás; si no, cierra la app.
 
-## Ejecutar en local
+## Abrir en Android Studio
 
-```bash
-python3 -m http.server 4173
-```
+1. Abrir Android Studio.
+2. Elegir **Open** y seleccionar esta carpeta (`/workspace/pruebas`).
+3. Esperar sincronización de Gradle.
+4. Ejecutar en tablet o emulador.
 
-Y abrir `http://localhost:4173`.
+## Requisitos recomendados
+
+- Android Studio Iguana o superior.
+- SDK 34 instalado.
+- Java 17.
