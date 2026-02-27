@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.otttv.data.sampleCatalog
 
 enum class Screen {
     Login,
@@ -149,13 +150,6 @@ private fun HomeScreen(
     userName: String,
     membership: String
 ) {
-    val featured = listOf(
-        ContentItem("Canal 24/7 Noticias", "24/7", "Incluido"),
-        ContentItem("Evento en vivo", "LIVE", "Premium"),
-        ContentItem("Película estreno", "PPV", "Pagar por ver"),
-        ContentItem("Vimeo Creator Pick", "VIMEO", "Incluido")
-    )
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -178,7 +172,7 @@ private fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(14.dp),
             contentPadding = PaddingValues(end = 16.dp)
         ) {
-            items(featured) { item ->
+            items(sampleCatalog) { item ->
                 ContentCard(item)
             }
         }

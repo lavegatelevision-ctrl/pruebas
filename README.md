@@ -43,3 +43,36 @@ Plantilla inicial para una app **Android TV OTT** con:
 - Persistencia de sesión segura.
 - Sistema de roles (admin para publicar videos).
 - CMS/backoffice para subir contenido y gestionar catálogo.
+
+## ¿Cómo agrego contenido?
+
+Ahora tienes una lista central en:
+
+- `app/src/main/java/com/example/otttv/data/SampleCatalog.kt`
+
+### Ejemplo rápido
+
+Añade un nuevo elemento dentro de `sampleCatalog`:
+
+```kotlin
+ContentItem(
+    title = "Concierto especial",
+    type = "LIVE",
+    access = "Pagar por ver"
+)
+```
+
+### Qué significa cada campo
+
+- `title`: título que ve el usuario.
+- `type`: tipo de contenido (`24/7`, `LIVE`, `PPV`, `VIMEO`).
+- `access`: regla de acceso (`Incluido`, `Premium`, `Pagar por ver`).
+
+### En producción (recomendado)
+
+En vez de lista fija, normalmente se hace así:
+
+1. Subes videos y metadata a un backend/CMS.
+2. La app consulta API (`/catalog`, `/live`, `/ppv`, etc.).
+3. Según membresía/compra, el backend devuelve permiso de reproducción.
+4. Reproduces con Media3/ExoPlayer usando URLs HLS/DASH.
